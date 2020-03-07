@@ -1,0 +1,62 @@
+{
+    "terminal.integrated.shell.osx": "/bin/zsh",
+    "[sql]": {},
+    "explorer.confirmDelete": false,
+    "editor.fontFamily": "Jetbrains Mono",
+    "editor.fontLigatures": true,
+    "editor.fontWeight": "500",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "One Dark Pro",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.fontSize": 13,
+    "files.autoSave": "onWindowChange",
+    "terminal.external.osxExec": "iTerm.app",
+    "workbench.colorCustomizations": {},
+    "go.useLanguageServer": true,
+    "go.formatTool": "goreturns",
+    "go.lintTool": "golangci-lint",
+    "go.lintFlags": [
+        "--enable-all",
+        "-D",
+        "gochecknoglobals",
+        "-D",
+        "dogsled",
+        "-D",
+        "godox",
+        "-D",
+        "funlen",
+        "-D",
+        "dupl"
+    ],
+    "go.gotoSymbol.includeImports": true,
+    "go.lintOnSave": "package",
+    "go.autocompleteUnimportedPackages": true,
+    "go.languageServerExperimentalFeatures": {
+        "format": true,
+        "autoComplete": true,
+        "rename": true,
+        "goToDefinition": true,
+        "hover": true,
+        "signatureHelp": true,
+        "goToTypeDefinition": true,
+        "goToImplementation": true,
+        "documentSymbols": true,
+        "workspaceSymbols": true,
+        "findReferences": true,
+        "diagnostics": true,
+        "documentLink": true,
+        "highlight": true
+    },
+    "go.useCodeSnippetsOnFunctionSuggest": true,
+    "[xml]": {
+        "editor.defaultFormatter": "redhat.vscode-xml"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "diffEditor.ignoreTrimWhitespace": false,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+}
