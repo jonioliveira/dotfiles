@@ -17,7 +17,7 @@ fi
 
 }
 
-if [ $1 == "uninstall" ]; then
+if [[ $1 == "uninstall" ]]; then
     uninstall
 fi
 
