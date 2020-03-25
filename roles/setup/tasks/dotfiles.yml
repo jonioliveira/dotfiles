@@ -1,0 +1,16 @@
+---
+# getting my dotfile configuration
+
+- name: zsh dot file
+  copy:
+    src: /tmp/setup/dotfiles/.zshrc
+    dest: "{{general.local_home}}/.zshrc"
+
+- name: iterm2 profile dot file
+  copy:
+    src: /tmp/setup/dotfiles/iterm2_profiles.json
+    dest: "{{general.local_home}}/Library/Application Support/iTerm2/DynamicProfiles/iterm2_profiles.json"
+
+- name: run macos dot file
+  shell:
+    cmd: "sh /tmp/setup/dotfiles/.macos"

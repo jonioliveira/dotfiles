@@ -1,0 +1,51 @@
+general:
+  local_home: "{{ lookup('env','HOME') }}"
+
+# homebrew applications
+applications:
+  - git
+  - tree
+  - httpie
+  - kubectl
+  - kubernetes-helm
+  - zsh
+  - go
+  - terraform
+  - node
+  - kubectx
+  - golang-migrate
+  - golangci-lint
+  - nvm
+  - tfenv
+  - zsh-kubectl-prompt
+  - zsh-syntax-highlighting
+  - zsh-completions
+  - zsh-autosuggestions
+  - kube-ps1
+  - awscli
+
+# homebrew cask applications
+cask_applications:
+  - google-chrome
+  - slack
+  - iterm2
+  - docker
+  - minikube
+  - vagrant
+  - garmin-express
+  - alfred
+  - virtualbox
+  - spotify
+  - steam
+  - tunnelblick
+  - clipy
+  - sequel-pro
+  - visual-studio-code
+  - postman
+  - notion
+  - spotify
+  - whatsapp
+  - zoomus
+  - microsoft-office
+  - lastpass
+  - discord

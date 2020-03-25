@@ -1,21 +1,11 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/jonioliveira/.oh-my-zsh"
+export ZSH="/Users/$HOME/.oh-my-zsh"
 
  #Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME="spaceship"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -49,10 +39,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -75,7 +65,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(osx zsh-autosuggestions)
+plugins=(osx git zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -114,18 +104,7 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-alias p="cd ~/Projects"
-alias g="git"
-alias egli="cd ~/Projects/eagle-eye"
-alias eglietls="cd ~/Projects/eagle-eye/workspaces/etls"
-alias eglidata="cd ~/Projects/eagle-eye/workspaces/data-collector"
-alias egliview="cd ~/Projects/eagle-eye/workspaces/view"
-alias egliweb="cd ~/Projects/eagle-eye/workspaces/data-collector-web"
 alias wk="cd ~/Workspace"
-alias ccp="cd ~/Projects/ccp"
-alias ccptr="cd ~/Projects/ccp/training"
 
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
@@ -148,33 +127,17 @@ alias md="make down"
 alias mt="make test" 
 alias mr="make run"
 
-# Git shortcuts
-alias ga="git add "
-alias gaa="git add ."
-alias gcz="git cz"
-alias gco="git checkout "
-alias gcb="git checkout -b "
-alias gcm="git commit -m "
-alias gph="git push"
-alias gpl="git pull" 
-alias gst="git status"
-
 # Kill all the tabs in Chrome to free up memory
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
 # Export AWS Profile
-export AWS_PROFILE="eagle-eye"
 export GOPATH="/Users/jonioliveira/.go"
 
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-#Export Java
-export PATH=/Library/Java/JavaVirtualMachines/graalvm-ce-19.2.0.1/Contents/Home/bin:$PATH:$GOPATH/bin
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-19.2.0.1/Contents/Home
-
-#GO
+#Go
 export GO111MODULE=on
 
 #nvm
@@ -186,25 +149,28 @@ export PATH="/usr/local/opt/helm@2/bin:$PATH"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 #K8S
-export KUBECONFIG=$KUBECONFIG:$HOME/.kube/config:$HOME/.kube/kubecfg_ccp
-source <(kubectl completion zsh)
-echo 'alias k=kubectl' >>~/.zshrc
-echo 'complete -F __start_kubectl k' >>~/.zshrc
-alias k=kubectl
-complete -F __start_kubectl k
-alias k=kubectl
-complete -F __start_kubectl k
-alias k=kubectl
-complete -F __start_kubectl k
-alias k=kubectl
-complete -F __start_kubectl k
-alias k=kubectl
-complete -F __start_kubectl k
-alias k=kubectl
-complete -F __start_kubectl k
-alias k=kubectl
-complete -F __start_kubectl k
-alias k=kubectl
-complete -F __start_kubectl k
-alias k=kubectl
-complete -F __start_kubectl k
+export KUBECONFIG=$KUBECONFIG:$HOME/.kube/config:$HOME/.kube/kubecfg_ccp:$HOME/.kube/okteto-kube.config
+alias k="kubectl "
+alias ktx="kubectx "
+alias kns="kubens"
+
+# Deployment management.
+alias kgd='kubectl get deployment'
+alias kgda='kubectl get deployment --all-namespaces'
+
+# Logs
+alias kl='kubectl logs'
+
+# Tools for accessing all information
+alias kga='kubectl get all'
+alias kgaa='kubectl get all --all-namespaces'
+
+# ConfigMap management
+alias kgcm='kubectl get configmaps'
+alias kgcma='kubectl get configmaps --all-namespaces'
+
+# Apply a YML file
+alias kaf='kubectl apply -f'
+
+# Drop into an interactive terminal on a container
+alias keti='kubectl exec -ti'
