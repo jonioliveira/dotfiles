@@ -33,7 +33,7 @@
     cmd: "npm install -g commitizen"
 
 - name: install rust
-  shel:
+  shell:
     cmd: "curl https://sh.rustup.rs -sSf | sh"
 
 - name: create workspace directories
