@@ -14,7 +14,7 @@ applications:
   - node
   - kubectx
   - golang-migrate
-  - golangci-lint
+  - golangci/tap/golangci-lint
   - nvm
   - tfenv
   - zsh-kubectl-prompt
