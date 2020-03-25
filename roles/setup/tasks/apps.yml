@@ -4,9 +4,8 @@
 
 - name: start installing homebrew applications
   homebrew:
-    name: "{{item}}"
+    name: "{{applications}}"
     state: present
-  with_items: "{{applications}}"
 
 - name: start installing homebrew cask applications
   homebrew_cask:
