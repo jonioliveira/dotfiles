@@ -17,7 +17,6 @@ applications:
   - golangci/tap/golangci-lint
   - nvm
   - tfenv
-  - zsh-kubectl-prompt
   - zsh-syntax-highlighting
   - zsh-completions
   - zsh-autosuggestions
