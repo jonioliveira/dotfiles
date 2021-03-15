@@ -7,7 +7,6 @@ applications:
   - tree
   - httpie
   - kubectl
-  - kubernetes-helm
   - zsh
   - go
   - terraform
@@ -22,6 +21,16 @@ applications:
   - zsh-autosuggestions
   - kube-ps1
   - awscli
+  - kubernetes-cli
+  - nmap
+  - okteto
+  - yq
+  - yarn
+  - podman
+  - tldr
+  - htop
+  - raycast
+  - helm
 
 # homebrew cask applications
 cask_applications:
@@ -38,7 +47,6 @@ cask_applications:
   - steam
   - tunnelblick
   - clipy
-  - sequel-pro
   - visual-studio-code
   - postman
   - notion
@@ -46,5 +54,6 @@ cask_applications:
   - whatsapp
   - zoomus
   - microsoft-office
-  - lastpass
+  - microsoft-auto-update
   - discord
+  - google-cloud-sdk

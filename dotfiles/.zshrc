@@ -1,7 +1,7 @@
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/$HOME/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
- #Set name of the theme to load --- if set to "random", it will
+#Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -65,7 +65,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(osx git zsh-autosuggestions)
+plugins=(osx git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -95,6 +95,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+SPACESHIP_KUBECTL_SHOW=true
+SPACESHIP_KUBECTL_VERSION_SHOW=false
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -105,6 +108,8 @@ alias -- -="cd -"
 
 # Shortcuts
 alias wk="cd ~/Workspace"
+alias cmy="cd ~/Workspace/cloudmobility"
+alias cmyp="cd ~/Workspace/cloudmobility/projects"
 
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
@@ -116,29 +121,25 @@ alias di="docker inspect "
 alias dc="docker-compose "
 alias dcb="docker-compose build"
 alias dcu="docker-compose up"
-alias dsa="docker stop $(docker ps -a -q)"
-alias dra="docker rm $(docker ps -a -q)" 
+alias dsall="docker stop $(docker ps -a -q)"
+alias drall="docker rm $(docker ps -a -q)" 
+alias drimgall="docker rm $(docker images -q)" 
 
 # Make shortcuts
 alias m="make "
-alias ml="make lint"
-alias mu="make up"
-alias md="make down"
-alias mt="make test" 
-alias mr="make run"
 
 # Kill all the tabs in Chrome to free up memory
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
 # Export AWS Profile
-export GOPATH="/Users/jonioliveira/.go"
-
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #Go
-export GO111MODULE=on
+export GO111MODULE=auto
+export GOPATH=$HOME/.go
+export PATH=$GOPATH/bin:$PATH
 
 #nvm
 export NVM_DIR=~/.nvm
@@ -148,29 +149,72 @@ export PATH="/usr/local/opt/helm@2/bin:$PATH"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-#K8S
-export KUBECONFIG=$KUBECONFIG:$HOME/.kube/config:$HOME/.kube/kubecfg_ccp:$HOME/.kube/okteto-kube.config
+################################################################
+#                 K8S
+################################################################
+
+# Set the default kube context if present
+DEFAULT_KUBE_CONTEXTS="$HOME/.kube/config"
+if test -f "${DEFAULT_KUBE_CONTEXTS}"
+then
+  export KUBECONFIG="$DEFAULT_KUBE_CONTEXTS"
+fi
+
+# Additional contexts should be in ~/.kube/custom-contexts/ 
+CUSTOM_KUBE_CONTEXTS="$HOME/.kube/contexts"
+mkdir -p "${CUSTOM_KUBE_CONTEXTS}"
+
+OIFS="$IFS"
+IFS=$'\n'
+for contextFile in `find "${CUSTOM_KUBE_CONTEXTS}" -type f -name "*kube.config"`  
+do
+    export KUBECONFIG="$contextFile:$KUBECONFIG"
+done
+IFS="$OIFS"
+
+#alias 
 alias k="kubectl "
-alias ktx="kubectx "
+alias kx="kubectx "
 alias kns="kubens"
 
 # Deployment management.
-alias kgd='kubectl get deployment'
-alias kgda='kubectl get deployment --all-namespaces'
+alias kdp='kubectl get deployment'
+alias kdpa='kubectl get deployment --all-namespaces'
 
 # Logs
 alias kl='kubectl logs'
 
 # Tools for accessing all information
-alias kga='kubectl get all'
-alias kgaa='kubectl get all --all-namespaces'
+alias ka='kubectl get all'
+alias kaa='kubectl get all --all-namespaces'
 
-# ConfigMap management
-alias kgcm='kubectl get configmaps'
-alias kgcma='kubectl get configmaps --all-namespaces'
+alias kca='kubectl get configmaps --all-namespaces'
 
 # Apply a YML file
 alias kaf='kubectl apply -f'
 
 # Drop into an interactive terminal on a container
 alias keti='kubectl exec -ti'
+
+# Describe
+alias kd='kubectl describe'
+
+# Get Pods
+alias kp='kubectl get pods'
+
+# Get svc
+alias ks='kubectl get svc'
+
+# Get ingress
+alias ki='kubectl get ingress'
+
+# Get Config Maps
+alias kc='kubectl get cm'
+
+# kubectl completion
+source <(kubectl completion zsh)
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/joni/workspace/.google-cloud-sdk/path.zsh.inc' ]; then . '/Users/joni/workspace/.google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/joni/workspace/.google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/joni/workspace/.google-cloud-sdk/completion.zsh.inc'; fi

@@ -30,7 +30,7 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo Hos
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-# Save screenshots to the downlaods.
+# Save screenshots to the downloads.
 defaults write com.apple.screencapture location "$HOME/Downloads/"
 
 # Disable the warning before emptying the Trash
