@@ -23,10 +23,11 @@ fi
 
 echo "Setting up your mac"
 
-sudo easy_install pip
-sudo easy_install ansible
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python3 get-pip.py
+sudo pip install ansible --quiet
 
-export PATH="$HOME/Library/Python/2.7/bin/:$PATH"
+export PATH="$HOME/Library/Python/3.8/bin/:$PATH"
 
 installdir="/tmp/setup"
 mkdir $installdir

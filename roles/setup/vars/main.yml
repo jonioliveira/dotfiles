@@ -31,17 +31,15 @@ applications:
   - htop
   - raycast
   - helm
+  - docker
+  - minikube
 
 # homebrew cask applications
 cask_applications:
   - google-chrome
   - slack
   - iterm2
-  - docker
-  - minikube
   - vagrant
-  - garmin-express
-  - alfred
   - virtualbox
   - spotify
   - steam

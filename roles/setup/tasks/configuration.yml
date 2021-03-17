@@ -3,22 +3,21 @@
     cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 - name: get powerline fonts
-  git:
-    repo: git clone https://github.com/powerline/fonts.git
-    dest: "/tmp/setup/fonts"
-    depth: "1"
+  ansible.builtin.git:
+    repo: 'https://github.com/powerline/fonts.git'
+    dest: /tmp/setup/fonts
 
 - name: install fonts
   shell:
     cmd: "cd /tmp/setup/fonts && ./install.sh"
 
 - name: get spaceship prompt
-  git:
+  ansible.builtin.git:
     repo: https://github.com/denysdovhan/spaceship-prompt.git
     dest: "{{ lookup('env', 'ZSH_CUSTOM')}}/themes/spaceship-prompt"
 
 - name: setting up zsh with oh-my-zsh
-  git:
+  ansible.builtin.git:
     repo: https://github.com/robbyrussell/oh-my-zsh.git
     dest: "{{general.local_home}}/.oh-my-zsh"
 
@@ -34,7 +33,7 @@
 
 - name: install rust
   shell:
-    cmd: "curl https://sh.rustup.rs -sSf | sh"
+    cmd: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
 
 - name: create workspace directories
   file:

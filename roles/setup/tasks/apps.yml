@@ -2,13 +2,14 @@
 - name: application installs
   include: homebrew.yml
 
-- name: start installing homebrew applications
-  homebrew:
-    name: "{{applications}}"
-    state: present
-
 - name: start installing homebrew cask applications
   homebrew_cask:
     name: "{{item}}"
     state: present
   with_items: "{{cask_applications}}"
+  
+- name: start installing homebrew applications
+  homebrew:
+    name: "{{applications}}"
+    state: present
+
