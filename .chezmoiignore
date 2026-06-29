@@ -1,0 +1,13 @@
+# Claude Code auth state — sign in manually per machine
+.claude/.credentials.json
+.claude/statsig
+.claude/sessions
+.claude/projects
+
+# Caches / generated
+.zcompdump*
+.zsh/**/*.zwc
+
+# Plan/spec docs live in the repo but are not home-dir files
+docs/
+README.md
