@@ -1,0 +1,14 @@
+# Managed by chezmoi. Do not edit ~/.ssh/config directly.
+
+Host github.com
+    User git
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519
+{{ if .isWork }}
+Host gitlab.company.com
+    User git
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519_work
+{{- end }}
