@@ -71,7 +71,7 @@ Naming conventions: `dot_` → `.`; `private_` → 0600 perms (used for `~/.ssh`
 
 | Concern | Mechanism |
 |---|---|
-| Git identity | `dot_gitconfig.tmpl` sets personal email globally; `includeIf "gitdir:~/work/"` pulls in work email/signing for repos under `~/work/`. No manual switching. |
+| Git identity | `dot_gitconfig.tmpl` sets **personal** identity globally (the default for `~/dev/` and everywhere else); `includeIf "gitdir:~/workspace/"` overlays the **work** email/signing for repos under `~/workspace/`, and is only present when `isWork`. Personal repos live in `~/dev/`, work repos in `~/workspace/`. No manual switching. |
 | GitLab SSH | `private_dot_ssh/config.tmpl` adds a `gitlab.company.com` Host block (+ IdentityFile) only `{{ if .isWork }}`. |
 | glab CLI | In `Brewfile.tmpl` under a `{{ if .isWork }}` block. |
 | Claude Code logins | **Not managed.** `~/.claude/settings.json` is synced (shared config); auth token is in `.chezmoiignore`. Sign in manually per machine. |
@@ -98,10 +98,12 @@ freelens, spotify.
 **Dropped (dead / uninstalled):** vagrant, virtualbox, minikube, okteto, nmap,
 tunnelblick, zoomus, microsoft-office, microsoft-auto-update, hub (→ gh), asdf
 (→ mise), terraform/tfenv (→ opentofu), nvm (→ mise), docker desktop (→ podman),
-postman, discord (unless wanted), notion (unless wanted).
+discord (unless wanted), notion (unless wanted).
 
-> Final inclusion of ambiguous casks (discord, notion, postman) to be confirmed
-> during implementation against what is actually installed.
+**Kept (shared cask):** postman.
+
+> Final inclusion of ambiguous casks (discord, notion) to be confirmed during
+> implementation against what is actually installed.
 
 ## Bootstrap & Idempotency
 
@@ -139,5 +141,14 @@ Independent of the repo rebuild, the live machine can be tidied:
 
 1. Exact `op://` paths for work secrets (vault + item names).
 2. Work GitLab host (`gitlab.company.com` placeholder) and IdentityFile path.
-3. Final cask list for ambiguous apps (discord, notion, postman).
+3. Final cask list for ambiguous apps (discord, notion).
 4. Whether to run the old `.macos` defaults script as-is or prune it first.
+
+## Resolved Conventions
+
+- **Personal repos:** `~/dev/`. **Work repos:** `~/workspace/`.
+- Git default identity = personal; work identity overlaid via
+  `includeIf "gitdir:~/workspace/"` only on work machines.
+- Shell jump aliases updated to match: `dev` → `cd ~/dev`, `work` → `cd ~/workspace`
+  (replacing the old `wk`/`cmy` aliases that pointed at `~/Workspace/cloudmobility`).
+- Postman kept as a shared cask.
