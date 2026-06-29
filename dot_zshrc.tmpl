@@ -1,0 +1,131 @@
+# Completions (cached, revalidate daily)
+fpath=(~/.zsh/zsh-completions/src $fpath)
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
+# Shell tools
+eval "$(starship init zsh)"
+eval "$(mise activate zsh)"
+eval "$(zoxide init zsh)"
+source <(fzf --zsh)
+
+# Plugins
+source ~/.zsh/plugins/git.plugin.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Lazy-load kubectl completions
+kubectl() {
+  unfunction kubectl
+  source <(command kubectl completion zsh)
+  command kubectl "$@"
+}
+
+# Key bindings
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+bindkey '^[[Z' autosuggest-accept
+
+# Homebrew
+export HOMEBREW_DEVELOPER=1
+
+# Navigation
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~"
+alias -- -="cd -"
+alias dev="cd ~/dev"
+alias work="cd ~/workspace"
+alias sudo='sudo '
+
+# Docker / Make / Rails
+alias d="docker "
+alias m="make "
+alias be="bundle exec "
+alias r="./bin/rails "
+alias rdev="./bin/dev "
+
+# Modern CLI replacements
+alias cat='bat --paging=never'
+alias less='bat'
+alias diff='delta'
+alias top='htop'
+alias ps='procs'
+alias ls='eza'
+alias grep='rg'
+alias df='duf'
+alias du='dust'
+
+# Go
+export GO111MODULE=auto
+export GOPATH=$HOME/.go
+export GOROOT="/opt/homebrew/opt/go/libexec"
+export PATH="$GOPATH/bin:$HOME/.local/bin:$PATH"
+
+# K8s
+DEFAULT_KUBE_CONTEXTS="$HOME/.kube/config"
+if [[ -f "$DEFAULT_KUBE_CONTEXTS" ]]; then
+  export KUBECONFIG="$DEFAULT_KUBE_CONTEXTS"
+fi
+for contextFile in "$HOME/.kube/contexts"/*kube.config(N); do
+  export KUBECONFIG="$contextFile:$KUBECONFIG"
+done
+
+alias k="kubectl "
+alias kdp='kubectl get deployment'
+alias kdpa='kubectl get deployment --all-namespaces'
+alias kl='kubectl logs'
+alias ka='kubectl get all'
+alias kaa='kubectl get all --all-namespaces'
+alias kca='kubectl get configmaps --all-namespaces'
+alias kaf='kubectl apply -f'
+alias keti='kubectl exec -ti'
+alias kd='kubectl describe'
+alias kp='kubectl get pods'
+alias ks='kubectl get svc'
+alias ki='kubectl get ingress'
+alias kc='kubectl get cm'
+
+{{ if .isWork -}}
+# Work-only: glab completion
+if command -v glab >/dev/null 2>&1; then
+  source <(glab completion -s zsh)
+fi
+{{- end }}
+
+alias git_current_branch="git rev-parse --abbrev-ref HEAD"
+
+export ENABLE_EXPERIMENTAL_MCP_CLI=true
+
+# Background-compile plugins for faster future loads
+{
+  for f in ~/.zsh/**/*.zsh; do
+    [[ $f.zwc -ot $f ]] && zcompile "$f"
+  done
+} &!
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:{{ .chezmoi.homeDir }}/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# bun completions
+[ -s "{{ .chezmoi.homeDir }}/.bun/_bun" ] && source "{{ .chezmoi.homeDir }}/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="{{ .chezmoi.homeDir }}/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
