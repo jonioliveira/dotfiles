@@ -225,12 +225,13 @@ git commit -m "feat: template zshrc with portable paths and work-only glab block
 [user]
     name = Jóni Oliveira
     email = joni@jonioliveira.dev
+    signingkey = ~/.ssh/id_ed25519.pub
 
 [init]
     defaultBranch = main
 
 [pull]
-    rebase = true
+    ff = only
 
 [core]
     pager = delta
@@ -243,20 +244,37 @@ git commit -m "feat: template zshrc with portable paths and work-only glab block
 
 [push]
     autoSetupRemote = true
+
+[gpg]
+    format = ssh
+
+[commit]
+    gpgsign = true
 {{ if .isWork }}
 [includeIf "gitdir:~/workspace/"]
     path = ~/.gitconfig-work
 {{- end }}
 ```
 
-- [ ] **Step 2: Write `dot_gitconfig-work.tmpl` (work identity, email from 1Password)**
+> Note: `user.signingkey` is set per-identity. Personal signing key is set in
+> the `[user]` block above via the next step; work signing key is set in the
+> work overlay. Add `signingkey = ~/.ssh/id_ed25519.pub` to the `[user]` block.
+> After apply, register the **public** key (`~/.ssh/id_ed25519.pub`) as a
+> *signing* key in GitHub settings (and GitLab on work machines) — one-time,
+> manual, per forge.
+
+- [ ] **Step 2: Write `dot_gitconfig-work.tmpl` (work identity, email hardcoded)**
 
 ```ini
 [user]
-    email = {{ onepasswordRead "op://Work/git/email" }}
+    email = REPLACE_WITH_WORK_EMAIL
+    signingkey = ~/.ssh/id_ed25519_work.pub
 ```
 
-> Note: the `op://Work/git/email` path is a placeholder vault/item to confirm during execution. If the work email is not sensitive, it may be hardcoded instead and 1Password dropped for this field.
+> The work email is NOT a secret, so it is hardcoded here (no 1Password dependency).
+> Replace `REPLACE_WITH_WORK_EMAIL` with the real work email during execution.
+> The work signing key (`id_ed25519_work.pub`) only needs to exist on work machines;
+> this overlay is only included when `isWork`.
 
 - [ ] **Step 3: Render personal gitconfig and confirm no work include**
 
@@ -677,8 +695,8 @@ Expected: prints the `dev` alias, and resolves starship/mise/zoxide — confirmi
 
 - [ ] **Step 4: Verify git config resolved correctly**
 
-Run: `git config --get core.pager && git config --get user.email`
-Expected: `delta` and `joni@jonioliveira.dev`.
+Run: `git config --get core.pager && git config --get user.email && git config --get gpg.format && git config --get commit.gpgsign`
+Expected: `delta`, `joni@jonioliveira.dev`, `ssh`, `true`.
 
 - [ ] **Step 5: Verify Brewfile satisfaction and push the branch**
 
@@ -704,6 +722,7 @@ These are independent of the repo and can be done anytime:
 
 These appear as placeholders in the templates and MUST be replaced with real values before the work-machine path is trusted (they do not affect the personal-machine apply in Task 10):
 
-1. `op://Work/git/email` — real 1Password vault/item/field for the work git email (Task 4).
+1. `REPLACE_WITH_WORK_EMAIL` — the real work git email, hardcoded in `dot_gitconfig-work.tmpl` (Task 4). Not a secret; no 1Password needed.
 2. `gitlab.company.com` and `~/.ssh/id_ed25519_work` — real work GitLab host + key filename (Task 5).
 3. Any work VPN client to add to the work Brewfile block (Task 6).
+4. After apply, register `~/.ssh/id_ed25519.pub` as a *signing key* in GitHub (and the work key in GitLab on work machines) to get Verified commits — one-time manual step per forge.
