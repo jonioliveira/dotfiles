@@ -1,0 +1,62 @@
+# Managed by chezmoi. Edit Brewfile.tmpl in the dotfiles repo, not the rendered file.
+
+# --- Shared formulae ---
+brew "gh"
+brew "chezmoi"
+brew "mise"
+brew "uv"
+brew "fzf"
+brew "zoxide"
+brew "ripgrep"
+brew "fd"
+brew "bat"
+brew "eza"
+brew "git-delta"
+brew "dust"
+brew "duf"
+brew "procs"
+brew "htop"
+brew "tree"
+brew "ffmpeg"
+brew "libpq"
+brew "golangci-lint"
+brew "yarn"
+
+# Kubernetes
+brew "kubernetes-cli"
+brew "kubectx"
+brew "helm"
+
+# Infra / cloud
+brew "opentofu"
+brew "tflint"
+brew "tfsec"
+brew "trivy"
+brew "infracost"
+brew "awscli"
+brew "hcloud"
+brew "tailscale"
+brew "cloudflared"
+
+# Containers / AI
+brew "podman"
+brew "ollama"
+
+# --- Shared casks ---
+cask "ghostty@tip"
+cask "visual-studio-code"
+cask "raycast"
+cask "clipy"
+cask "podman-desktop"
+cask "freelens"
+cask "1password-cli"
+
+{{ if .isWork }}
+# --- Work-only ---
+brew "glab"
+{{- end }}
+
+{{ if not .isWork }}
+# --- Personal-only ---
+cask "spotify"
+{{- end }}
