@@ -568,10 +568,14 @@ if ! command -v op >/dev/null 2>&1; then
   brew install --cask 1password-cli
 fi
 
-# Render the Brewfile from the template (isWork is known at apply time) and install.
-# chezmoi processes Brewfile.tmpl into the source-state, so we render it here directly.
+# Render the Brewfile from the template and install everything it declares.
+# This run_once script is itself rendered by chezmoi, so {{ .isWork }} below is
+# already the real value for THIS machine. Pass it via --override-data — the
+# only flag that sets a DATA key. (--promptBool does NOT work here: Brewfile.tmpl
+# reads .isWork as data, not as a promptBool call, so --promptBool yields
+# "map has no entry for key isWork" and brew bundle never runs.)
 RENDERED_BREWFILE="$(mktemp)"
-chezmoi execute-template --init --promptBool isWork={{ .isWork }} \
+chezmoi execute-template --override-data '{"isWork":{{ .isWork }}}' \
   < "{{ .chezmoi.sourceDir }}/Brewfile.tmpl" > "$RENDERED_BREWFILE"
 brew bundle --file="$RENDERED_BREWFILE"
 rm -f "$RENDERED_BREWFILE"
