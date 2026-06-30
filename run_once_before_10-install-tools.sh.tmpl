@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Don't let `brew bundle` auto-update Homebrew or upgrade existing packages —
+# this script gates `chezmoi apply`, so it must be fast and idempotent. It
+# INSTALLS anything missing and leaves already-installed packages untouched.
+# (Upgrades are a separate, deliberate `brew upgrade`, never a side effect of
+# applying dotfiles.)
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ENV_HINTS=1
+
 # Install Homebrew if missing
 if ! command -v brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -17,8 +25,9 @@ fi
 # already the real value for THIS machine. We pass it to execute-template via
 # --override-data (the only flag that sets a data key; --promptBool does NOT,
 # because Brewfile.tmpl reads .isWork as data, not a promptBool call).
+# --no-upgrade: install missing packages only; never upgrade installed ones.
 RENDERED_BREWFILE="$(mktemp)"
+trap 'rm -f "$RENDERED_BREWFILE"' EXIT
 chezmoi execute-template --override-data '{"isWork":{{ .isWork }}}' \
   < "{{ .chezmoi.sourceDir }}/Brewfile.tmpl" > "$RENDERED_BREWFILE"
-brew bundle --file="$RENDERED_BREWFILE"
-rm -f "$RENDERED_BREWFILE"
+brew bundle --no-upgrade --file="$RENDERED_BREWFILE"
