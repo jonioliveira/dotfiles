@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Install Homebrew if missing
+if ! command -v brew >/dev/null 2>&1; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Install 1Password CLI early — secret-bearing templates need it
+if ! command -v op >/dev/null 2>&1; then
+  brew install --cask 1password-cli
+fi
+
+# Render the Brewfile from the template (isWork is known at apply time) and install.
+# chezmoi processes Brewfile.tmpl into the source-state, so we render it here directly.
+RENDERED_BREWFILE="$(mktemp)"
+chezmoi execute-template --init --promptBool isWork={{ .isWork }} \
+  < "{{ .chezmoi.sourceDir }}/Brewfile.tmpl" > "$RENDERED_BREWFILE"
+brew bundle --file="$RENDERED_BREWFILE"
+rm -f "$RENDERED_BREWFILE"
