@@ -1,0 +1,6 @@
+# Managed by chezmoi. Maps identities to SSH signing keys so git can verify
+# signed commits locally (git log --show-signature → "Good signature").
+joni@jonioliveira.dev ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG6yGrwHY7RFQ6VKDBfd2NGD3SqkyWv6CJQ5l6lQpNTX
+{{ if .isWork -}}
+REPLACE_WITH_WORK_EMAIL ssh-ed25519 REPLACE_WITH_WORK_SSH_PUBKEY
+{{- end }}
