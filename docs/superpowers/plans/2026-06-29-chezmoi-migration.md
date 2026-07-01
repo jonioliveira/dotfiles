@@ -735,7 +735,24 @@ These are independent of the repo and can be done anytime:
 
 These appear as placeholders in the templates and MUST be replaced with real values before the work-machine path is trusted (they do not affect the personal-machine apply in Task 10):
 
-1. `REPLACE_WITH_WORK_EMAIL` — the real work git email, hardcoded in `dot_gitconfig-work.tmpl` (Task 4). Not a secret; no 1Password needed.
-2. `gitlab.company.com` and `~/.ssh/id_ed25519_work` — real work GitLab host + key filename (Task 5).
+1. ~~`REPLACE_WITH_WORK_EMAIL`~~ — DONE. Work git email set to `joni.oliveira89@gmail.com` in `dot_gitconfig-work.tmpl` and `allowed_signers.tmpl`.
+2. `gitlab.company.com` and `~/.ssh/id_ed25519_work` — real work GitLab host + key filename (Task 5). Fill on a work machine.
 3. Any work VPN client to add to the work Brewfile block (Task 6).
 4. After apply, register `~/.ssh/id_ed25519.pub` as a *signing key* in GitHub (and the work key in GitLab on work machines) to get Verified commits — one-time manual step per forge.
+5. `REPLACE_WITH_WORK_SSH_PUBKEY` in `dot_config/git/allowed_signers.tmpl` — the work SSH public key (from `id_ed25519_work.pub`), for local verification of work-signed commits (rendered only when isWork). Fill after generating the work key.
+
+## Post-apply learnings (this machine)
+
+- The bootstrap `run_once` script gates `chezmoi apply`. `brew bundle` defaults to
+  UPGRADING all packages, which is far too slow to gate apply and caused a timeout
+  that aborted the first apply. Fixed with `HOMEBREW_NO_AUTO_UPDATE=1` +
+  `brew bundle --no-upgrade` (install-missing-only). Upgrades are a separate,
+  deliberate `brew upgrade`.
+- SSH commit signing needs `gpg.ssh.allowedSignersFile` (mapping email→pubkey) for
+  LOCAL verification, otherwise `git log --show-signature` reports "No signature"
+  even though commits are signed. Added `dot_config/git/allowed_signers.tmpl`.
+- On this dev machine the repo lives at `~/workspace/dotfiles`, so chezmoi's config
+  carries a manual `sourceDir` and `[data].isWork = false`. This triggers a benign
+  "config file template has changed" warning (chezmoi can't emit sourceDir from the
+  config template). New machines use `chezmoi init --apply <url>` which clones to the
+  default `~/.local/share/chezmoi` and avoids the warning entirely.
