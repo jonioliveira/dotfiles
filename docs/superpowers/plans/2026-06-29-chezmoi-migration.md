@@ -735,7 +735,7 @@ These are independent of the repo and can be done anytime:
 
 These appear as placeholders in the templates and MUST be replaced with real values before the work-machine path is trusted (they do not affect the personal-machine apply in Task 10):
 
-1. ~~`REPLACE_WITH_WORK_EMAIL`~~ — DONE. Work git email set to `joni.oliveira89@gmail.com` in `dot_gitconfig-work.tmpl` and `allowed_signers.tmpl`.
+1. ~~`REPLACE_WITH_WORK_EMAIL`~~ — DONE. Personal = joni.oliveira89@gmail.com, Work = joni.oliveira@supermodular.ai in `dot_gitconfig-work.tmpl` and `allowed_signers.tmpl`.
 2. `gitlab.company.com` and `~/.ssh/id_ed25519_work` — real work GitLab host + key filename (Task 5). Fill on a work machine.
 3. Any work VPN client to add to the work Brewfile block (Task 6).
 4. After apply, register `~/.ssh/id_ed25519.pub` as a *signing key* in GitHub (and the work key in GitLab on work machines) to get Verified commits — one-time manual step per forge.
