@@ -1,0 +1,35 @@
+[user]
+    name = Jóni Oliveira
+    email = joni.oliveira89@gmail.com
+    signingkey = ~/.ssh/id_ed25519.pub
+
+[init]
+    defaultBranch = main
+
+[pull]
+    ff = only
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+
+[push]
+    autoSetupRemote = true
+
+[gpg]
+    format = ssh
+
+[gpg "ssh"]
+    allowedSignersFile = {{ .chezmoi.homeDir }}/.config/git/allowed_signers
+
+[commit]
+    gpgsign = true
+{{ if .isWork }}
+[includeIf "gitdir:~/workspace/"]
+    path = ~/.gitconfig-work
+{{- end }}

@@ -1,0 +1,26 @@
+# Managed by chezmoi. Ghostty terminal configuration.
+# Ghostty ships sensible defaults; only overrides are set here.
+# Docs: https://ghostty.org/docs/config  •  Reload: Cmd+Shift+,
+
+# Font — JetBrains Mono (installed). Falls back to system mono if absent.
+font-family = JetBrains Mono
+font-size = 14
+
+# Theme — built-in. Browse others with `ghostty +list-themes`.
+theme = catppuccin-mocha
+
+# Window
+window-padding-x = 8
+window-padding-y = 6
+macos-titlebar-style = tabs
+background-opacity = 0.98
+background-blur = 20
+
+# Behavior
+copy-on-select = clipboard
+mouse-hide-while-typing = true
+confirm-close-surface = false
+
+# Shell integration (zsh) — enables cursor/title/prompt niceties
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
