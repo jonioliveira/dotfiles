@@ -11,3 +11,6 @@
 # Plan/spec docs live in the repo but are not home-dir files
 docs/
 README.md
+
+# Ghostty's old Library-path template — we manage ~/.config/ghostty/config instead
+Library/Application Support/com.mitchellh.ghostty
