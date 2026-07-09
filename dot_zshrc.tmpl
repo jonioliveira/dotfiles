@@ -14,8 +14,9 @@ eval "$(zoxide init zsh)"
 source <(fzf --zsh)
 
 # Plugins — git plugin is chezmoi-managed (~/.zsh), the rest installed by brew.
-# Order matters: zsh-syntax-highlighting must be sourced last.
+# Order matters: zsh-autocomplete before the others, zsh-syntax-highlighting last.
 source ~/.zsh/plugins/git.plugin.zsh
+source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
