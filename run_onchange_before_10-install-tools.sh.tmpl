@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# run_onchange_: re-runs whenever this rendered script's content changes. The
+# hash below changes with Brewfile.tmpl, so adding a package to the Brewfile
+# re-runs `brew bundle` on every machine at its next apply/update.
+# Brewfile hash: {{ include "Brewfile.tmpl" | sha256sum }}
+
 # Don't let `brew bundle` auto-update Homebrew or upgrade existing packages —
 # this script gates `chezmoi apply`, so it must be fast and idempotent. It
 # INSTALLS anything missing and leaves already-installed packages untouched.
@@ -21,7 +26,7 @@ if ! command -v op >/dev/null 2>&1; then
 fi
 
 # Render the Brewfile from the template and install everything it declares.
-# This run_once script is itself rendered by chezmoi, so {{ .isWork }} below is
+# This script is itself rendered by chezmoi, so {{ .isWork }} below is
 # already the real value for THIS machine. We pass it to execute-template via
 # --override-data (the only flag that sets a data key; --promptBool does NOT,
 # because Brewfile.tmpl reads .isWork as data, not a promptBool call).

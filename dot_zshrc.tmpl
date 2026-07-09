@@ -1,5 +1,5 @@
 # Completions (cached, revalidate daily)
-fpath=(~/.zsh/zsh-completions/src $fpath)
+fpath=(/opt/homebrew/share/zsh-completions $fpath)
 autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
   compinit
@@ -13,10 +13,11 @@ eval "$(mise activate zsh)"
 eval "$(zoxide init zsh)"
 source <(fzf --zsh)
 
-# Plugins
+# Plugins — git plugin is chezmoi-managed (~/.zsh), the rest installed by brew.
+# Order matters: zsh-syntax-highlighting must be sourced last.
 source ~/.zsh/plugins/git.plugin.zsh
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Lazy-load kubectl completions
 kubectl() {
@@ -105,7 +106,7 @@ export ENABLE_EXPERIMENTAL_MCP_CLI=true
 
 # Background-compile plugins for faster future loads
 {
-  for f in ~/.zsh/**/*.zsh; do
+  for f in ~/.zsh/**/*.zsh(N); do
     [[ $f.zwc -ot $f ]] && zcompile "$f"
   done
 } &!
