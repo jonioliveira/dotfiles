@@ -1,8 +1,12 @@
-# Completions (cached, revalidate daily)
+# Completions (cached, revalidate daily). -u: skip the insecure-directory
+# check — Homebrew ships /opt/homebrew/share group-writable (admin group),
+# which is on fpath; without -u compinit aborts and `compdef` never gets
+# defined, breaking every plugin that registers completions. Safe on a
+# single-user Mac where the admin group is just you.
 fpath=(/opt/homebrew/share/zsh-completions $fpath)
 autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-  compinit
+  compinit -u
 else
   compinit -C
 fi
